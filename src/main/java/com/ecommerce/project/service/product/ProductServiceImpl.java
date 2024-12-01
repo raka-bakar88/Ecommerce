@@ -226,8 +226,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    private double getSpecialPrice(double productPrice, double productDisctount) {
+    private double getSpecialPrice(double productPrice, double productDiscount) {
         return productPrice -
-                ((productDisctount * 0.01) * productPrice);
+                ((productDiscount * 0.01) * productPrice);
     }
 }

@@ -13,7 +13,6 @@ import com.ecommerce.project.repositories.ProductRepository;
 import com.ecommerce.project.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -145,7 +144,7 @@ public class CartServiceImpl implements CartService {
 
         String emailId = authUtil.loggedInEmail();
         Cart userCart = cartRepository.findCartByEmail(emailId);
-        Long cartId  = userCart.getCartId();
+        Long cartId = userCart.getCartId();
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
@@ -173,9 +172,9 @@ public class CartServiceImpl implements CartService {
         if (newQuantity < 0)
             throw new APIException("the resulting quantity cannot be negative");
 
-        if (newQuantity == 0){
+        if (newQuantity == 0) {
             deleteProductFromCart(cartId, productId);
-        } else{
+        } else {
             cartItem.setProductPrice(product.getSpecialPrice());
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItem.setDiscount(product.getDiscount());
@@ -184,7 +183,7 @@ public class CartServiceImpl implements CartService {
         }
 
         CartItem updatedItem = cartItemRepository.save(cartItem);
-        if(updatedItem.getQuantity() == 0){
+        if (updatedItem.getQuantity() == 0) {
             cartItemRepository.deleteById(updatedItem.getCartItemId());
         }
 
@@ -209,12 +208,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public String deleteProductFromCart(Long cartId, Long productId) {
         Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart","CartId",cartId));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart", "CartId", cartId));
 
         CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCartId(cartId, productId);
 
-        if (cartItem == null){
-            throw new ResourceNotFoundException("Product","productId",productId);
+        if (cartItem == null) {
+            throw new ResourceNotFoundException("Product", "productId", productId);
         }
 
         cart.setTotalPrice(cart.getTotalPrice() - (cartItem.getProductPrice() * cartItem.getQuantity()));
@@ -223,7 +222,7 @@ public class CartServiceImpl implements CartService {
 //        product.setQuantity(product.getQuantity() + cartItem.getQuantity());
 
         cartItemRepository.deleteCartItemByProductIdAndCartId(cartId, productId);
-        return "Product "+cartItem.getProduct().getProductName() + " removed from the cart";
+        return "Product " + cartItem.getProduct().getProductName() + " removed from the cart";
     }
 
     @Override

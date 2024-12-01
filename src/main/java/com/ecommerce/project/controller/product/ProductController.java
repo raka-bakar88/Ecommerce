@@ -1,4 +1,4 @@
-package com.ecommerce.project.controller;
+package com.ecommerce.project.controller.product;
 
 import com.ecommerce.project.config.AppConstants;
 import com.ecommerce.project.payload.product.ProductDTO;

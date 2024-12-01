@@ -1,4 +1,4 @@
-package com.ecommerce.project.controller;
+package com.ecommerce.project.controller.authentication;
 
 import com.ecommerce.project.model.AppRole;
 import com.ecommerce.project.model.Role;
@@ -65,7 +65,7 @@ public class AuthController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         // for JWT Token based
-        //String jwtToken = jwtUtils.generateTokenFromUsername(userDetails);
+        // String jwtToken = jwtUtils.generateTokenFromUsername(userDetails);
         // for JWT Cookie based
         ResponseCookie cookie = jwtUtils.generateJwtCookie(userDetails);
 

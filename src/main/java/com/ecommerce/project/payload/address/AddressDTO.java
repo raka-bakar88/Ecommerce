@@ -11,7 +11,8 @@ public class AddressDTO {
     private Long addressId;
     private String street;
     private String buildingName;
+    private String state;
     private String city;
     private String country;
-    private String zipcode;
+    private String pincode;
 }

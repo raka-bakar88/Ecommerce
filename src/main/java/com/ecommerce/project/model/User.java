@@ -59,11 +59,11 @@ public class User {
 
     @Setter
     @Getter
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "user_address",
-    joinColumns = @JoinColumn(name = "user_id"), // Foreign key column for User
-    inverseJoinColumns = @JoinColumn(name = "address_id") // Foreign key column for address
-    )
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+//    @JoinTable(name = "user_address",
+//    joinColumns = @JoinColumn(name = "user_id"), // Foreign key column for User
+//    inverseJoinColumns = @JoinColumn(name = "address_id") // Foreign key column for address
+//    )
     private List<Address> addresses = new ArrayList<>();
 
     // orphan removal means when a user is deleted, then the product will not have parent thus deleted too
