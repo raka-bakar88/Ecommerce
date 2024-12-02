@@ -17,8 +17,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    //@GetMapping("api/public/categories")
-    @RequestMapping(value = "/public/categories", method = RequestMethod.GET)
+    @GetMapping("/public/categories")
     public ResponseEntity<CategoryResponse> getAllCategories(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER) Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE) Integer pageSize,
@@ -29,22 +28,19 @@ public class CategoryController {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    //@PostMapping("api/public/categories")
-    @RequestMapping(value = "/public/categories", method = RequestMethod.POST)
+    @PostMapping("/public/categories")
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         CategoryDTO savedCategoryDTO = categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>(savedCategoryDTO, HttpStatus.OK);
     }
 
-    //@DeleteMapping("/api/admin/categories/{categoryId}")
-    @RequestMapping(value = "/admin/categories/{categoryId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/admin/categories/{categoryId}")
     public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {
         CategoryDTO categoryDTO = categoryService.deleteCategory(categoryId);
         return new ResponseEntity<>(categoryDTO, HttpStatus.OK);
     }
 
-    //@PutMapping("api/public/categories/{categoryId}")
-    @RequestMapping(value = "/public/categories/{categoryId}", method = RequestMethod.PUT)
+    @PutMapping("/public/categories/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO,
                                                       @PathVariable Long categoryId) {
         CategoryDTO savedCategory = categoryService.updateCategory(categoryDTO, categoryId);
