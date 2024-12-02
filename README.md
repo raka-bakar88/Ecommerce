@@ -10,6 +10,7 @@ Tech stacks:
 - Lombok
 - Model Mapper
 - Spring Framework Security
+- Maven
 
   **Architecture design**
 
