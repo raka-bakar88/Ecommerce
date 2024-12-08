@@ -2,6 +2,7 @@ package com.ecommerce.project.controller.address;
 
 import com.ecommerce.project.payload.address.AddressDTO;
 import com.ecommerce.project.service.address.AddressService;
+import com.ecommerce.project.util.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(Constants.FULL_API)
 public class AddressController {
 
     @Autowired

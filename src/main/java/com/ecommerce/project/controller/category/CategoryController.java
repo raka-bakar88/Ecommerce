@@ -4,6 +4,7 @@ import com.ecommerce.project.config.AppConstants;
 import com.ecommerce.project.payload.category.CategoryDTO;
 import com.ecommerce.project.payload.category.CategoryResponse;
 import com.ecommerce.project.service.category.CategoryService;
+import com.ecommerce.project.util.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(Constants.FULL_API)
 public class CategoryController {
 
     @Autowired

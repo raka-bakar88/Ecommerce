@@ -4,6 +4,7 @@ import com.ecommerce.project.config.AppConstants;
 import com.ecommerce.project.payload.product.ProductDTO;
 import com.ecommerce.project.payload.product.ProductResponse;
 import com.ecommerce.project.service.product.ProductService;
+import com.ecommerce.project.util.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(Constants.FULL_API)
 public class ProductController {
 
     @Autowired
@@ -68,7 +69,7 @@ public class ProductController {
 
     @PutMapping("/products/{productId}/image")
     public ResponseEntity<ProductDTO> updateProductImage(@Valid @PathVariable Long productId,
-                                                         @RequestParam("Image")MultipartFile image) throws IOException {
+                                                         @RequestParam("Image") MultipartFile image) throws IOException {
         ProductDTO updatedProduct = productService.updateProductImage(productId, image);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }

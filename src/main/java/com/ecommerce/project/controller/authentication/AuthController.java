@@ -11,6 +11,7 @@ import com.ecommerce.project.security.request.SignupRequest;
 import com.ecommerce.project.security.response.MessageResponse;
 import com.ecommerce.project.security.response.UserInfoResponse;
 import com.ecommerce.project.security.services.UserDetailsImpl;
+import com.ecommerce.project.util.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(Constants.FULL_API + Constants.AUTH)
 public class AuthController {
 
     @Autowired
@@ -48,15 +49,15 @@ public class AuthController {
     PasswordEncoder encoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                     loginRequest.getPassword()));
 
-        }catch (AuthenticationException authenticationException){
+        } catch (AuthenticationException authenticationException) {
             Map<String, Object> map = new HashMap<>();
-            map.put("message","Bad credentials");
+            map.put("message", "Bad credentials");
             map.put("status", false);
             return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         }
@@ -77,21 +78,21 @@ public class AuthController {
         // for JWT Cookie based
         UserInfoResponse response = new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), roles);
         // for JWT Token based
-       // return ResponseEntity.ok(response);
+        // return ResponseEntity.ok(response);
         // for JWT Cookie based
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(response);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         System.out.println("signup");
-        if (userRepository.existsByUserName(signupRequest.getUsername())){
-                return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+        if (userRepository.existsByUserName(signupRequest.getUsername())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByEmail(signupRequest.getEmail())){
+        if (userRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is in use!"));
         }
 
@@ -101,30 +102,31 @@ public class AuthController {
         Set<String> strRoles = signupRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null){
+        if (strRoles == null) {
             Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
-        }else {
-            strRoles.forEach(role-> {
-                switch (role){
-            case "admin" : Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(adminRole);
-                    break;
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+                        break;
 
-            case "seller":
-                Role modRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER)
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                roles.add(modRole);
+                    case "seller":
+                        Role modRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(modRole);
 
-                break;
-            default:
-                Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
-                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                roles.add(userRole);
-        }
-        });
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
         }
         user.setRoles(roles);
         userRepository.save(user);
@@ -132,15 +134,15 @@ public class AuthController {
     }
 
     @GetMapping("/username")
-    public String currentUserName(Authentication authentication){
+    public String currentUserName(Authentication authentication) {
         if (authentication != null)
             return authentication.getName();
         else
-            return  "";
+            return "";
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> getUserDetails(Authentication authentication){
+    public ResponseEntity<?> getUserDetails(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         List<String> roles = userDetails.getAuthorities().stream()
@@ -152,10 +154,10 @@ public class AuthController {
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<?> signoutUser(){
+    public ResponseEntity<?> signoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new MessageResponse("You have been signed out"));
     }
 }

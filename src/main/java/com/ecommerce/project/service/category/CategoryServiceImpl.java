@@ -41,8 +41,6 @@ public class CategoryServiceImpl implements CategoryService {
         Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
 
         List<Category> savedCategories = categoryPage.getContent();
-//        if (savedCategories.isEmpty())
-//            throw new APIException("Categories data is empty");
         List<CategoryDTO> categoryDTOS = savedCategories.stream().map(category -> modelMapper.map(category, CategoryDTO.class))
                 .toList();
         CategoryResponse categoryResponse = new CategoryResponse();
