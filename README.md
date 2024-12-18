@@ -14,7 +14,7 @@ Tech stacks:
 
   **Architecture design**
 
-  It uses three layer designs which is following best practises, various principles(eg: Separation of concern, SOLID princicle) etc.
+  It uses three layer designs which is following best practises, various principles(eg: Separation of concern, SOLID principle) etc.
 - Controller layer = as a gateway to accept api request from clients and returns response from the server back to the client.
 - Service layer = where the business logic is being managed
 - Repository layer = to access data resource such as Database. In this application, it uses MySQL Database
